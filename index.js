@@ -49,9 +49,9 @@ function Person(name, age)
 Person.prototype.eat = function(someFood)
 {
   if(someFood <= 10)
-    {
-      this.stomach.push(someFood);
-    }
+  {
+    this.stomach.push(someFood);
+  }
 }
 
 Person.prototype.poop = function()
@@ -89,7 +89,25 @@ function Car(model, milesPerGallon)
 
 Car.prototype.fill = function(gallons)
 {
-  this.tank = gallons;
+  this.tank += gallons;
+}
+
+Car.prototype.drive = function(distance)
+{
+  let maxDistance = this.tank * this.milesPerGallon;
+
+  if(distance > maxDistance)
+  {
+    distance = maxDistance;
+  }
+
+  this.odometer += distance;
+  this.tank -= distance / this.milesPerGallon;
+  
+  if(this.tank <= 0)
+  {
+    return `I ran out of fuel at ${this.odometer} miles`;
+  }
 }
 
 /*
@@ -99,18 +117,27 @@ Car.prototype.fill = function(gallons)
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
+function Baby(name, age, favortiteToy) 
+{
+  Person.call(this, name, age);
+  this.favoriteToy = favortiteToy;
+}
 
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function()
+{
+  return `Playing with ${this.favoriteToy}`;
 }
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Window/Global binding - When this is used in global scope it'll return the value of the window object that's found in the web browser.
+  2. Implicit binding - This is used when accessing an object's function and refers to "this object instance" is calling this function.
+  3. New binding - Similar to implicit binding except this is bound to the constructor when creating an object using the new keyword.
+  4. Explicit binding - This is used with .call or .apply functions to override a constructor which calls it explcity from using those functions.
 */
 
 
